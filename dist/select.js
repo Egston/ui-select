@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.0 - 2015-05-28T07:44:11.360Z
+ * Version: 0.12.0+egston.1 - 2015-06-26T17:44:30.347Z
  * License: MIT
  */
 
@@ -325,11 +325,20 @@ uis.controller('uiSelectCtrl',
         ctrl.activeIndex = 0;
       }
 
-      // Give it time to appear before focus
-      $timeout(function() {
-        ctrl.search = initSearchValue || ctrl.search;
-        ctrl.searchInput[0].focus();
-      });
+      ctrl.search = initSearchValue || ctrl.search;
+
+      // Give it time (twice) to appear before focus
+      $timeout((function() {
+        var retried = false;
+        function focus() {
+          ctrl.searchInput[0].focus();
+          if (window.document.activeElement !== ctrl.searchInput[0] && !retried) {
+            retried = true;
+            $timeout(focus);
+          }
+        }
+        return focus;
+      })());
     }
   };
 
