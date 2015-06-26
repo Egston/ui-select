@@ -88,11 +88,20 @@ uis.controller('uiSelectCtrl',
         ctrl.activeIndex = 0;
       }
 
-      // Give it time to appear before focus
-      $timeout(function() {
-        ctrl.search = initSearchValue || ctrl.search;
-        ctrl.searchInput[0].focus();
-      });
+      ctrl.search = initSearchValue || ctrl.search;
+
+      // Give it time (twice) to appear before focus
+      $timeout((function() {
+        var retried = false;
+        function focus() {
+          ctrl.searchInput[0].focus();
+          if (window.document.activeElement !== ctrl.searchInput[0] && !retried) {
+            retried = true;
+            $timeout(focus);
+          }
+        }
+        return focus;
+      })());
     }
   };
 
