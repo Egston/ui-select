@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.0+egston.2 - 2015-08-28T10:05:26.611Z
+ * Version: 0.12.0+egston.3 - 2015-08-28T14:34:27.582Z
  * License: MIT
  */
 
@@ -64,7 +64,8 @@ body > .select2-container.open {
 
     box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.25);
 
-    margin-top: -4px; /* FIXME hardcoded value :-/ */
+    margin-top: 1px;  /* FIXME hardcoded value :-/ */
+    border-bottom-width: 0;
 }
 .ui-select-container[theme="select2"].direction-up .ui-select-dropdown .select2-search {
     margin-top: 4px; /* FIXME hardcoded value :-/ */
