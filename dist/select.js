@@ -1,7 +1,7 @@
 /*!
  * ui-select
  * http://github.com/angular-ui/ui-select
- * Version: 0.12.0+egston.1 - 2015-06-26T17:44:30.347Z
+ * Version: 0.12.0+egston.2 - 2015-08-28T10:05:26.606Z
  * License: MIT
  */
 
@@ -767,8 +767,8 @@ uis.controller('uiSelectCtrl',
 }]);
 
 uis.directive('uiSelect',
-  ['$document', 'uiSelectConfig', 'uiSelectMinErr', 'uisOffset', '$compile', '$parse', '$timeout',
-  function($document, uiSelectConfig, uiSelectMinErr, uisOffset, $compile, $parse, $timeout) {
+  ['$document', '$window', 'uiSelectConfig', 'uiSelectMinErr', 'uisOffset', '$compile', '$parse', '$timeout',
+  function($document, $window, uiSelectConfig, uiSelectMinErr, uisOffset, $compile, $parse, $timeout) {
 
   return {
     restrict: 'EA',
@@ -1038,7 +1038,7 @@ uis.directive('uiSelect',
               var offsetDropdown = uisOffset(dropdown);
 
               // Determine if the direction of the dropdown needs to be changed.
-              if (offset.top + offset.height + offsetDropdown.height > $document[0].documentElement.scrollTop + $document[0].documentElement.clientHeight) {
+              if (offset.top + offset.height + offsetDropdown.height > ($window.pageYOffset || $document[0].documentElement.scrollTop) + $document[0].documentElement.clientHeight) {
                 dropdown[0].style.position = 'absolute';
                 dropdown[0].style.top = (offsetDropdown.height * -1) + 'px';
                 element.addClass(directionUpClassName);
