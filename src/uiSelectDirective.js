@@ -256,6 +256,21 @@ uis.directive('uiSelect',
         var dropdown = null,
             directionUpClassName = 'direction-up';
 
+        var repositionUpwardDropdown = function () {
+          if (!$select.open || !element.hasClass(directionUpClassName)) {
+            return;
+          }
+
+          if ($select.open) {
+            dropdown = angular.element(element).querySelectorAll('.ui-select-dropdown');
+            if (dropdown === null) {
+              return;
+            }
+            var offsetDropdown = uisOffset(dropdown);
+            dropdown[0].style.top = offsetDropdown.height * -1 + 'px';
+          }
+        };
+
         // Support changing the direction of the dropdown if there isn't enough space to render it.
         scope.$watch('$select.open', function(isOpen) {
           if (isOpen) {
@@ -274,9 +289,14 @@ uis.directive('uiSelect',
 
               // Determine if the direction of the dropdown needs to be changed.
               if (offset.top + offset.height + offsetDropdown.height > $document[0].documentElement.scrollTop + $document[0].documentElement.clientHeight) {
+                element.addClass(directionUpClassName);
+                offsetDropdown = uisOffset(dropdown); // recalculate after class changed
                 dropdown[0].style.position = 'absolute';
                 dropdown[0].style.top = (offsetDropdown.height * -1) + 'px';
-                element.addClass(directionUpClassName);
+                // Reposition upward dropdown each time the collection of items changes
+                scope.$watchCollection('$select.items', function() {
+                  $timeout(repositionUpwardDropdown);
+                });
               }
 
               // Display the dropdown once it has been positioned.
