@@ -43,7 +43,7 @@ uis.controller('uiSelectCtrl',
   if (ctrl.searchInput.length !== 1) {
     throw uiSelectMinErr('searchInput', "Expected 1 input.ui-select-search but got '{0}'.", ctrl.searchInput.length);
   }
-  
+
   ctrl.isEmpty = function() {
     return angular.isUndefined(ctrl.selected) || ctrl.selected === null || ctrl.selected === '';
   };
@@ -90,13 +90,13 @@ uis.controller('uiSelectCtrl',
 
       ctrl.search = initSearchValue || ctrl.search;
 
-      // Give it time (twice) to appear before focus
+      // Give it time to appear before focus
       $timeout((function() {
-        var retried = false;
+        var retries = 10;
         function focus() {
           ctrl.searchInput[0].focus();
-          if (window.document.activeElement !== ctrl.searchInput[0] && !retried) {
-            retried = true;
+          if (window.document.activeElement !== ctrl.searchInput[0] && retries > 0) {
+            retries--;
             $timeout(focus);
           }
         }

@@ -279,10 +279,15 @@ uis.directive('uiSelect',
             // Hide the dropdown so there is no flicker until $timeout is done executing.
             dropdown[0].style.visibility = 'hidden';
 
-            // Delay positioning the dropdown until all choices have been added so its height is correct.
-            $timeout(function(){
+            var updateDropdownDirection = function() {
               var offset = uisOffset(element);
               var offsetDropdown = uisOffset(dropdown);
+
+              // if dropdown not yet created, wait a bit longer.
+              if (offsetDropdown.height === 0) {
+                  $timeout(updateDropdownDirection);
+                  return;
+              }
 
               // Determine if the direction of the dropdown needs to be changed.
               if (
@@ -301,7 +306,10 @@ uis.directive('uiSelect',
 
               // Display the dropdown once it has been positioned.
               dropdown[0].style.visibility = '';
-            });
+            };
+
+            // Delay positioning the dropdown until all choices have been added so its height is correct.
+            $timeout(updateDropdownDirection);
           } else {
               if (dropdown === null) {
                 return;
